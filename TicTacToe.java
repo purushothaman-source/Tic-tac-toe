@@ -8,9 +8,10 @@ public class TicTacToe {
         Scanner userInput=new Scanner(System.in);
         char userLetter =chooseUserLetter(userInput);
         char computeLetter =(userLetter == 'X')?'0':'x';
-        System.out.println(computeLetter);
         showBoard(board);
         int userMove=getUserMove(board,userInput);
+        makeMove(board,userMove,userLetter);
+        showBoard(board);
 
     }
     private static char[] createBoard(){   //UC 1
@@ -48,6 +49,11 @@ public class TicTacToe {
     }
     private  static boolean isSpaceFree(char[] board ,int index){
         return board[index] ==' ';
+    }
+    private static void makeMove(char[] board,int index,char letter){
+        boolean spaceFree =isSpaceFree(board,index);
+        if(spaceFree)
+            board[index]=letter;
     }
 }
 
