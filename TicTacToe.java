@@ -116,12 +116,33 @@ public class TicTacToe {
 
     private static int getComputerMove(char[] board) {
         Integer[] validCells = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int index;
         while (true) {
-            // System.out.println("what is your next move?(1-9): ");
-            int index = random.nextInt(9) + 1;
-            System.out.println("computer index : " + index);
-            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index))
+            if(board[2]=='0'&& board[3]=='0' || board[4]=='0'&& board[7]=='0'|| board[5]=='0'&& board[9]=='0')
+                index=1;
+             else if(board[1]=='0'&& board[3]=='0' || board[5]=='0'&& board[8]=='0')
+                 index=2;
+             else if(board[1]=='0'&& board[2]=='0' || board[6]=='0'&& board[9]=='0'|| board[5]=='0'&& board[7]=='0')
+                 index=3;
+             else if(board[5]=='0'&& board[6]=='0' || board[1]=='0'&& board[7]=='0')
+                 index=4;
+             else if(board[4]=='0'&& board[6]=='0' || board[2]=='0'&& board[8]=='0'|| board[1]=='0'&& board[9]=='0' ||board[3]=='0' && board[7]=='0')
+                 index=5;
+             else if(board[4]=='0'&& board[5]=='0' || board[3]=='0'&& board[9]=='0')
+                 index=6;
+             else if(board[8]=='0'&& board[9]=='0' || board[1]=='0'&& board[4]=='0'|| board[3]=='0'&& board[5]=='0')
+                 index=7;
+             else if(board[7]=='0'&& board[9]=='0' || board[2]=='0'&& board[5]=='0')
+                 index=8;
+             else if(board[7]=='0'&& board[8]=='0' || board[3]=='0'&& board[6]=='0'|| board[1]=='0'&& board[5]=='0')
+                 index=9;
+             else{
+             index = random.nextInt(9) + 1;}
+
+            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index)) {
+                System.out.println("computer index : " + index);
                 return index;
+            }
 
         }
     }
