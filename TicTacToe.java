@@ -7,7 +7,9 @@ public class TicTacToe {
     public static final int Tail = 1;
 
     public static enum Player {USER, COMPUTER}
+
     static Random random = new Random();
+
 
     //main method
     public static void main(String[] args) {
@@ -17,16 +19,61 @@ public class TicTacToe {
         char computerLetter = (userLetter == 'X') ? '0' : 'x';
         showBoard(board);
         Player player = getWhoStartsFirst();
+        boolean won = false;
+        boolean draw = false;
         if (player.equals(Player.USER)) {
-            System.out.println("User Move");
-            int userMove = getUserMove(board, userInput);
-            makeMove(board, userMove, userLetter);
-            showBoard(board);
+            do {
+                System.out.println("User Move");
+                int userMove = getUserMove(board, userInput);
+                makeMove(board, userMove, userLetter);
+                showBoard(board);
+                won = hasWon(userLetter, board, userMove);
+                if (won){
+                    System.out.println("you won");
+                    break;}
+                draw = isDraw(board);
+                if (draw)
+                    break;
+                System.out.println("Computer Move");
+                int computerMove = getComputerMove(board);
+                makeMove(board, computerMove, computerLetter);
+                showBoard(board);
+                draw = isDraw(board);
+                if (draw)
+                    break;
+                won = hasWon(computerLetter, board, computerMove);
+                if(won){
+                    System.out.println("Computer won");
+                }
+            } while (won == false);
+
         } else if (player.equals((Player.COMPUTER))) {
-            System.out.println("Computer Move");
-            int computerMove = getComputerMove(board);
-            makeMove(board, computerMove, computerLetter);
-            showBoard(board);
+            do {
+                System.out.println("Computer Move");
+                int computerMove = getComputerMove(board);
+                makeMove(board, computerMove, computerLetter);
+                showBoard(board);
+                won = hasWon(computerLetter, board, computerMove);
+                if (won){
+                    System.out.println("computer won");
+                    break;}
+                draw = isDraw(board);
+                if (draw)
+                    break;
+                System.out.println("User Move");
+                int userMove = getUserMove(board, userInput);
+                makeMove(board, userMove, userLetter);
+                showBoard(board);
+                won = hasWon(userLetter, board, userMove);
+                if(won)
+                    System.out.println("you won");
+                draw = isDraw(board);
+                if (draw)
+                    break;
+            } while (won == false);
+            if(draw)
+                System.out.println("Match draw");
+
         }
     }
 
@@ -60,8 +107,10 @@ public class TicTacToe {
         while (true) {
             System.out.println("what is your next move?(1-9): ");
             int index = userInput.nextInt();
-            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index)) ;
-            return index;
+            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index))
+                return index;
+            else
+                System.out.println("already occupied, try again");
         }
     }
 
@@ -70,14 +119,19 @@ public class TicTacToe {
         while (true) {
             // System.out.println("what is your next move?(1-9): ");
             int index = random.nextInt(9) + 1;
-            System.out.println("computer index : "+index);
-            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index)) ;
-            return index;
+            System.out.println("computer index : " + index);
+            if (Arrays.asList(validCells).contains(index) && isSpaceFree(board, index))
+                return index;
+
         }
     }
 
     private static boolean isSpaceFree(char[] board, int index) {
-        return board[index] == ' ';
+        if (board[index] == ' ')
+            return true;
+        else
+            return false;
+
     }
 
     private static void makeMove(char[] board, int index, char letter) {
@@ -90,6 +144,37 @@ public class TicTacToe {
 
         int toss = random.nextInt(2);
         return (toss == Head) ? Player.USER : Player.COMPUTER;
+    }
+
+    private static void gameStatus(char[] board) {
+        while (true) {
+            if (board[1] == board[2] && board[1] == board[3] || board[4] == board[5] && board[4] == board[6] || board[7] == board[8] && board[7] == board[9])
+                break;
+            else if (board[1] == board[4] && board[1] == board[7] || board[2] == board[5] && board[2] == board[8] || board[3] == board[6] && board[3] == board[9])
+                break;
+            else if (board[1] == board[5] && board[1] == board[9] || board[3] == board[5] && board[3] == board[7])
+                break;
+        }
+    }
+
+    public static boolean hasWon(int letter, char[] board, int index) {
+
+        return (board[1] == letter && board[2] == letter && board[3] == letter
+                || board[4] == letter && board[5] == letter && board[6] == letter
+                || board[7] == letter && board[8] == letter && board[9] == letter
+                || board[1] == letter && board[4] == letter && board[7] == letter
+                || board[2] == letter && board[5] == letter && board[8] == letter
+                || board[3] == letter && board[6] == letter && board[9] == letter
+                || board[1] == letter && board[5] == letter && board[9] == letter
+                || board[3] == letter && board[5] == letter && board[7] == letter);
+
+    }
+
+    private static boolean isDraw(char[] board) {
+        return ((board[1] == 'X' || board[1] == '0') && (board[2] == 'X' || board[2] == '0') && (board[3] == 'X' || board[3] == '0') && (board[4] == 'X' || board[4] == '0') &&
+                (board[5] == 'X' || board[5] == '0') && (board[6] == 'X' || board[6] == '0') && (board[7] == 'X' || board[7] == '0') && (board[8] == 'X' || board[8] == '0')
+                && (board[9] == 'X' || board[9] == '0'));
+
     }
 }
 
